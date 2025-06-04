@@ -6,21 +6,28 @@ app.use(express.json()); // Para ler JSON do corpo da requisição
 
 const validTipos = ['charizard', 'mewtwo', 'pikachu'];
 
-// 1.1 Criar Pokemon
+// 1.1 Criar Pokemon. Utilização de async
 app.post('/pokemons', async (req, res) => {
   try {
     const { tipo, treinador } = req.body;
+
     if (!validTipos.includes(tipo)) {
       return res.status(400).json({ error: 'Tipo inválido' });
     }
-    const nivel = 1;
+
+    if (!treinador || typeof treinador !== 'string' || !treinador.trim()) {
+      return res.status(400).json({ error: 'Treinador é obrigatório' });
+    }
+    const nivel = 1; // Utilização de await
+
     const [result] = await pool.query(
       'INSERT INTO pokemons (tipo, treinador, nivel) VALUES (?, ?, ?)',
       [tipo, treinador, nivel]
     );
 
     const id = result.insertId;
-    res.status(200).json({ id, tipo, treinador, nivel });
+
+    res.status(201).json({ id, tipo, treinador, nivel });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Erro no servidor' });
@@ -33,14 +40,22 @@ app.put('/pokemons/:id', async (req, res) => {
     const { id } = req.params;
     const { treinador } = req.body;
 
-    await pool.query(
+    if (!treinador || typeof treinador !== 'string' || !treinador.trim()) {
+      return res.status(400).json({ error: 'Treinador é obrigatório' });
+    }
+
+    const [result] = await pool.query(
       'UPDATE pokemons SET treinador = ? WHERE id = ?',
       [treinador, id]
     );
 
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Pokemon não encontrado' });
+    }
+
     res.status(204).send();
   } catch (err) {
-    console.error(err);
+    console.error('Erro ao alterar treinador:', err);
     res.status(500).json({ error: 'Erro no servidor' });
   }
 });
@@ -49,13 +64,20 @@ app.put('/pokemons/:id', async (req, res) => {
 app.delete('/pokemons/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    await pool.query('DELETE FROM pokemons WHERE id = ?', [id]);
+
+    const [result] = await pool.query('DELETE FROM pokemons WHERE id = ?', [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Pokemon não encontrado' });
+    }
+
     res.status(204).send();
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Erro no servidor' });
   }
 });
+
 
 // 1.4 Carregar um pokemon
 app.get('/pokemons/:id', async (req, res) => {
@@ -74,6 +96,7 @@ app.get('/pokemons/:id', async (req, res) => {
   }
 });
 
+
 // 1.5 Listar todos os pokemons
 app.get('/pokemons', async (req, res) => {
   try {
@@ -84,6 +107,7 @@ app.get('/pokemons', async (req, res) => {
     res.status(500).json({ error: 'Erro no servidor' });
   }
 });
+
 
 const PORT = process.env.PORT || 3006;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
