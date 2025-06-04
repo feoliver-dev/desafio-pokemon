@@ -120,4 +120,3 @@ describe('Testes unitários', () => {
     expect([p1, p2]).toContain(vencedor);
   });
 });
-

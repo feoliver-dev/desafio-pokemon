@@ -1,14 +1,15 @@
 const express = require('express');
-const { body, param, validationResult } = require('express-validator');
-const pool = require('./connection');  // ajuste o caminho se necessário
-
 const app = express();
+const pool = require('./connection');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
+const { body, param, validationResult } = require('express-validator');
 
-app.use(express.json());
+app.use(express.json()); // Para ler JSON do corpo da requisição
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const validTipos = ['charizard', 'mewtwo', 'pikachu'];
 
-// Middleware de validação de erros
 function validarErros(req, res, next) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -43,7 +44,46 @@ const validarId = [
     .isInt().withMessage('ID deve ser um número inteiro')
 ];
 
-// 1.1 Criar Pokemon
+/**
+ * @swagger
+ * /pokemons:
+ *   post:
+ *     summary: Cria um novo Pokémon
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - tipo
+ *               - treinador
+ *             properties:
+ *               tipo:
+ *                 type: string
+ *                 example: pikachu
+ *               treinador:
+ *                 type: string
+ *                 example: Ash
+ *     responses:
+ *       201:
+ *         description: Pokémon criado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 tipo:
+ *                   type: string
+ *                 treinador:
+ *                   type: string
+ *                 nivel:
+ *                   type: integer
+ */
+
+
 app.post('/pokemons', validarPokemon, validarErros, async (req, res, next) => {
   try {
     const { tipo, treinador } = req.body;
@@ -61,7 +101,34 @@ app.post('/pokemons', validarPokemon, validarErros, async (req, res, next) => {
   }
 });
 
-// 1.2 Alterar treinador
+/**
+ * @swagger
+ * /pokemons/{id}:
+ *   put:
+ *     summary: Altera o treinador de um Pokémon
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do Pokémon
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - treinador
+ *             properties:
+ *               treinador:
+ *                 type: string
+ *                 example: Misty
+ *     responses:
+ *       204:
+ *         description: Treinador alterado com sucesso (sem conteúdo)
+ */
 app.put('/pokemons/:id', validarId, validarErros, async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -90,7 +157,24 @@ app.put('/pokemons/:id', validarId, validarErros, async (req, res, next) => {
   }
 });
 
-// 1.3 Deletar pokemon
+/**
+ * @swagger
+ * /pokemons/{id}:
+ *   delete:
+ *     summary: Deleta um Pokémon
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do Pokémon
+ *     responses:
+ *       204:
+ *         description: Pokémon deletado com sucesso (sem conteúdo)
+ *       404:
+ *         description: Pokémon não encontrado
+ */
 app.delete('/pokemons/:id', validarId, validarErros, async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -109,7 +193,38 @@ app.delete('/pokemons/:id', validarId, validarErros, async (req, res, next) => {
   }
 });
 
-// 1.4 Carregar um pokemon
+
+/**
+ * @swagger
+ * /pokemons/{id}:
+ *   get:
+ *     summary: Retorna os dados de um Pokémon específico
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do Pokémon
+ *     responses:
+ *       200:
+ *         description: Dados do Pokémon retornados com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 tipo:
+ *                   type: string
+ *                 treinador:
+ *                   type: string
+ *                 nivel:
+ *                   type: integer
+ *       404:
+ *         description: Pokémon não encontrado
+ */
 app.get('/pokemons/:id', validarId, validarErros, async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -128,7 +243,32 @@ app.get('/pokemons/:id', validarId, validarErros, async (req, res, next) => {
   }
 });
 
-// 1.5 Listar todos os pokemons
+/**
+ * @swagger
+ * /pokemons:
+ *   get:
+ *     summary: Lista todos os Pokémons
+ *     responses:
+ *       200:
+ *         description: Lista de Pokémons retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   tipo:
+ *                     type: string
+ *                   treinador:
+ *                     type: string
+ *                   nivel:
+ *                     type: integer
+ */
+
+
 app.get('/pokemons', async (req, res, next) => {
   try {
     const [rows] = await pool.query('SELECT * FROM pokemons');
