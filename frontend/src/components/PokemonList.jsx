@@ -1,14 +1,20 @@
-// Listar Pokemons
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import api from '../services/api';
 
 function PokemonList() {
   const [pokemons, setPokemons] = useState([]);
 
+  const carregar = async () => {
+    try {
+      const res = await api.get('/pokemons');
+      setPokemons(res.data);
+    } catch (err) {
+      console.error('Erro ao carregar Pokémons', err);
+    }
+  };
+
   useEffect(() => {
-    api.get('/pokemons')
-      .then(response => setPokemons(response.data))
-      .catch(err => console.error(err));
+    carregar();
   }, []);
 
   return (
@@ -17,7 +23,7 @@ function PokemonList() {
       <ul>
         {pokemons.map(p => (
           <li key={p.id}>
-            {p.tipo} - {p.treinador} - Nível: {p.nivel}
+            {p.tipo} - {p.treinador} (Nível: {p.nivel})
           </li>
         ))}
       </ul>
