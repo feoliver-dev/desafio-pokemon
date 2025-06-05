@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../src/app'); // ajuste o caminho conforme o seu projeto
+const app = require('../app'); // ajuste o caminho conforme o seu projeto
 
 // Função isolada para testes unitários
 const validTipos = ['charizard', 'mewtwo', 'pikachu'];
@@ -120,3 +120,5 @@ describe('Testes unitários', () => {
     expect([p1, p2]).toContain(vencedor);
   });
 });
+
+
