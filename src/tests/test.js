@@ -1,5 +1,6 @@
 const request = require('supertest');
 const app = require('../app'); // ajuste o caminho conforme o seu projeto
+const pool = require('../connection');
 
 // Função isolada para testes unitários
 const validTipos = ['charizard', 'mewtwo', 'pikachu'];
@@ -17,6 +18,11 @@ function determinarVencedor(p1, p2) {
 
 describe('Testando CRUD de Pokémons', () => {
   let pokemonId;
+
+beforeAll(async () => {
+
+    console.log('Iniciando os testes...');
+  });
 
   it('Deve criar um Pokémon', async () => {
     const res = await request(app)
@@ -121,4 +127,7 @@ describe('Testes unitários', () => {
   });
 });
 
-
+afterAll(async () => {
+  console.log('Encerrando a conexão com o banco de dados...');
+  await pool.end();
+});
