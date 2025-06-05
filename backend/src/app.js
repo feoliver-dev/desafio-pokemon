@@ -16,10 +16,8 @@ app.use('/batalhar', batalhaRoutes);
 
 //Assim, o backend permite que qualquer frontend faça requisições → inclusive o React em outra porta.
 const cors = require('cors');
+app.use(cors());
 
-app.use(cors({
-  origin: 'http://localhost:3000'
-}));
 
 
 // Middleware de erro genérico

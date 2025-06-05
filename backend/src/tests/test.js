@@ -20,7 +20,7 @@ describe('Testando CRUD de Pokémons', () => {
   let pokemonId;
 
 beforeAll(async () => {
-
+    await pool.query('DELETE FROM pokemons');
     console.log('Iniciando os testes...');
   });
 
