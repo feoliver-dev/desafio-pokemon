@@ -70,6 +70,7 @@ const { validarBatalha, validarErros } = require('../validations/batalhaValidati
  *         description: Um ou ambos os pokémons não foram encontrados
  */
 
-router.post('/:pokemonAId/:pokemonBId', validarBatalha, validarErros, batalhaController.realizarBatalha);
+router.post('/batalhar/:pokemonAId/:pokemonBId', validarBatalha, validarErros, batalhaController.batalharController
+);
 
 module.exports = router;

@@ -16,7 +16,9 @@ app.use('/batalhar', batalhaRoutes);
 
 //Assim, o backend permite que qualquer frontend faça requisições → inclusive o React em outra porta.
 const cors = require('cors');
+
 app.use(cors());
+
 
 
 

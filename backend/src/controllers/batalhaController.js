@@ -6,7 +6,7 @@ function determinarVencedor(pokeA, pokeB) {
   return Math.random() < chanceA ? pokeA : pokeB;
 }
 
-module.exports.batalharController = async (req, res, next) => {
+exports.batalharController = async (req, res, next) => {
   try {
     const { pokemonAId, pokemonBId } = req.params;
 
