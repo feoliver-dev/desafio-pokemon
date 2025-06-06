@@ -1,10 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pokemonController = require('../controllers/pokemonController');
-const swaggerUi = require('swagger-ui-express');
-const swaggerSpec = require('./swagger');
 const { validarPokemon, validarId, validarErros } = require('../validations/pokemonValidation');
-const app = express();
 /**
  * @swagger
  * /pokemons:
