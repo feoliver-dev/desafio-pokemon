@@ -1,17 +1,17 @@
-version: '3.8'
-
 services:
   db:
-    image: mysql:8.0
+    image: mysql
     container_name: db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: pokemon_db
+      MYSQL_ROOT_PASSWORD: root
     ports:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
+      - ./backend/db/init.sql:/docker-entrypoint-initdb.d/init.sq
+
 
   backend:
     build: ./backend
@@ -35,3 +35,4 @@ services:
 
 volumes:
   mysql-data:
+

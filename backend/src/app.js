@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./swagger');
-
+const pool = require('./connection');
+const { body, param, validationResult } = require('express-validator');
 const pokemonRoutes = require('./routes/pokemonRoutes');
 const batalhaRoutes = require('./routes/batalhaRoutes');
 
