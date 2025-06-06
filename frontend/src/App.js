@@ -1,10 +1,14 @@
-import PokemonList from './components/PokemonList';
+import ListaPokemon from './components/ListaPokemon';
+import CriaPokemon from './components/CriaPokemon';
+import BatalhaPokemon from './components/BatalhaPokemon';
 
 function App() {
   return (
     <div>
       <h1>Desafio Pokémon</h1>
-      <PokemonList />
+      <ListaPokemon />
+      <CriaPokemon />
+      <BatalhaPokemon/>
     </div>
   );
 }
