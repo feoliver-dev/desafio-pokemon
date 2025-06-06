@@ -1,34 +1,24 @@
 import { useEffect, useState } from 'react';
-import api from '../services/api';
+import api from './services/api';
 
-function PokemonList() {
+export default function PokemonList() {
   const [pokemons, setPokemons] = useState([]);
 
-  const carregar = async () => {
-    try {
-      const res = await api.get('/pokemons');
-      setPokemons(res.data);
-    } catch (err) {
-      console.error('Erro ao carregar Pokémons', err);
-    }
-  };
-
   useEffect(() => {
-    carregar();
+    api.get('/pokemons')  // 🔁 Aqui você troca pela rota GET do seu backend
+      .then(response => setPokemons(response.data))
+      .catch(error => console.error(error));
   }, []);
 
   return (
     <div>
-      <h2>Lista de Pokémons</h2>
+      <h2>Lista de Pokémon</h2>
       <ul>
         {pokemons.map(p => (
-          <li key={p.id}>
-            {p.tipo} - {p.treinador} (Nível: {p.nivel})
-          </li>
+          <li key={p.id}>{p.nome} - Nível {p.nivel}</li>
         ))}
       </ul>
     </div>
   );
 }
 
-export default PokemonList;
