@@ -1,5 +1,6 @@
 const pool = require('../connection');
 
+
 exports.criarPokemon = async (req, res, next) => {
   try {
     const { tipo, treinador } = req.body;

@@ -141,6 +141,7 @@ app.get('/pokemons/:id', validarId, validarErros, async (req, res, next) => {
 app.get('/pokemons', async (req, res, next) => {
   try {
     const [rows] = await pool.query('SELECT * FROM pokemons');
+    
     res.status(200).json(rows);
   } catch (err) {
     next(err);
