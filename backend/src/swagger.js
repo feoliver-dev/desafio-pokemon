@@ -10,12 +10,14 @@ const options = {
     },
     servers: [
       {
-        url: process.env.BASE_URL || 'http://localhost:3006',
-        description: 'Servidor local ou Docker',
+        url: 'http://localhost:3006',
+        description: 'Servidor local',
       },
     ],
   },
-  apis: ['./src/routes/**/*.js'], // Agora suporta subdiretórios dentro de "routes"
+  apis: [
+    './src/routes/*.js'
+  ],
 };
 
 const swaggerSpec = swaggerJSDoc(options);

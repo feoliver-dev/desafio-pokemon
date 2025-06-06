@@ -1,20 +1,12 @@
-const mysql = require('mysql2/promise');
 require('dotenv').config();
+const mysql = require('mysql2/promise');
 
 const pool = mysql.createPool({
-  host: process.env.DB_HOST,     // deve ser 'db' vindo do .env
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
+  host: process.env.DB_HOST,      // "db" → nome do serviço MySQL no docker-compose
+  user: process.env.DB_USER,      // ex.: "root"
+  password: process.env.DB_PASSWORD,  // ex.: "root"
+  database: process.env.DB_NAME   // ex.: "pokemon_db"
 });
 
 module.exports = pool;
 
-pool.getConnection()
-  .then(conn => {
-    console.log('Conectado ao MySQL com sucesso!');
-    conn.release();
-  })
-  .catch(err => {
-    console.error('Erro ao conectar ao MySQL:', err);
-  });

@@ -17,25 +17,6 @@ app.use(batalhaRoutes);
 
 const validTipos = ['charizard', 'mewtwo', 'pikachu'];
 
-// Middleware de validação de erros
-function validarErros(req, res, next) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    const error = new Error(errors.array().map(e => e.msg).join(', '));
-    error.status = 400;
-    return next(error);
-  }
-  next();
-}
-
-// Middleware de erro genérico
-function errorHandler(err, req, res, next) {
-  console.error(err.stack);
-  const status = err.status || 500;
-  const message = err.message || 'Erro interno no servidor';
-  res.status(status).json({ error: message });
-}
-
 // Validações
 const validarPokemon = [
   body('tipo')
@@ -53,9 +34,19 @@ const validarId = [
 ];
 
 // 1.1 Criar Pokemon
-app.post('/pokemons', validarPokemon, validarErros, async (req, res, next) => {
+// 1.1 Criar Pokemon
+app.post('/pokemons', async (req, res) => {
   try {
     const { tipo, treinador } = req.body;
+
+    if (!validTipos.includes(tipo)) {
+      return res.status(400).json({ error: 'Tipo inválido' });
+    }
+
+    if (!treinador || typeof treinador !== 'string' || !treinador.trim()) {
+      return res.status(400).json({ error: 'Treinador é obrigatório' });
+    }
+
     const nivel = 1;
 
     const [result] = await pool.query(
@@ -64,22 +55,23 @@ app.post('/pokemons', validarPokemon, validarErros, async (req, res, next) => {
     );
 
     const id = result.insertId;
+
     res.status(201).json({ id, tipo, treinador, nivel });
   } catch (err) {
-    next(err);
+    console.error('Erro ao criar Pokémon:', err);
+    res.status(500).json({ error: 'Erro no servidor' });
   }
 });
 
+
 // 1.2 Alterar treinador
-app.put('/pokemons/:id', validarId, validarErros, async (req, res, next) => {
+app.put('/pokemons/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { treinador } = req.body;
 
     if (!treinador || typeof treinador !== 'string' || !treinador.trim()) {
-      const error = new Error('Treinador é obrigatório');
-      error.status = 400;
-      throw error;
+      return res.status(400).json({ error: 'Treinador é obrigatório' });
     }
 
     const [result] = await pool.query(
@@ -88,68 +80,58 @@ app.put('/pokemons/:id', validarId, validarErros, async (req, res, next) => {
     );
 
     if (result.affectedRows === 0) {
-      const error = new Error('Pokemon não encontrado');
-      error.status = 404;
-      throw error;
+      return res.status(404).json({ error: 'Pokemon não encontrado' });
     }
 
     res.status(204).send();
   } catch (err) {
-    next(err);
+    console.error('Erro ao alterar treinador:', err);
+    res.status(500).json({ error: 'Erro no servidor' });
   }
 });
 
 // 1.3 Deletar pokemon
-app.delete('/pokemons/:id', validarId, validarErros, async (req, res, next) => {
+app.delete('/pokemons/:id', async (req, res) => {
   try {
     const { id } = req.params;
-
-    const [result] = await pool.query('DELETE FROM pokemons WHERE id = ?', [id]);
-
-    if (result.affectedRows === 0) {
-      const error = new Error('Pokemon não encontrado');
-      error.status = 404;
-      throw error;
-    }
-
+    await pool.query('DELETE FROM pokemons WHERE id = ?', [id]);
     res.status(204).send();
   } catch (err) {
-    next(err);
+    console.error(err);
+    res.status(500).json({ error: 'Erro no servidor' });
   }
 });
 
+
 // 1.4 Carregar um pokemon
-app.get('/pokemons/:id', validarId, validarErros, async (req, res, next) => {
+app.get('/pokemons/:id', async (req, res) => {
   try {
     const { id } = req.params;
-
     const [rows] = await pool.query('SELECT * FROM pokemons WHERE id = ?', [id]);
 
     if (rows.length === 0) {
-      const error = new Error('Pokemon não encontrado');
-      error.status = 404;
-      throw error;
+      return res.status(404).json({ error: 'Pokemon não encontrado' });
     }
 
     res.status(200).json(rows[0]);
   } catch (err) {
-    next(err);
+    console.error(err);
+    res.status(500).json({ error: 'Erro no servidor' });
   }
 });
+
 
 // 1.5 Listar todos os pokemons
-app.get('/pokemons', async (req, res, next) => {
+app.get('/pokemons', async (req, res) => {
   try {
     const [rows] = await pool.query('SELECT * FROM pokemons');
-    
     res.status(200).json(rows);
   } catch (err) {
-    next(err);
+    console.error(err);
+    res.status(500).json({ error: 'Erro no servidor' });
   }
 });
 
-// Middleware de erro genérico
-app.use(errorHandler);
 
 module.exports = app;
 

@@ -34,6 +34,6 @@ const { validarBatalha, validarErros } = require('../validations/batalhaValidati
  *                 perdedor:
  *                   type: object
  */
-router.post('/:pokemonAId/:pokemonBId', validarBatalha, validarErros, batalhaController.realizarBatalha);
+router.post('/batalhar/:pokemonAId/:pokemonBId', validarBatalha, validarErros, batalhaController.realizarBatalha);
 
 module.exports = router;
