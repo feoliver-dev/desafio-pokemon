@@ -5,5 +5,5 @@ CREATE TABLE IF NOT EXISTS pokemons (
   id INT AUTO_INCREMENT PRIMARY KEY,
   tipo VARCHAR(50),
   treinador VARCHAR(50),
-  nivel INT
+  nivel INT DEFAULT=1
 );
