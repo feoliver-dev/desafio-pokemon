@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import api from '../services/api';
 
 function BatalhaPokemon() {
-  const [idA, setIdA] = useState('');
-  const [idB, setIdB] = useState('');
+  const [pokemonAId, setpokemonAId] = useState('');
+  const [pokemonBId, setpokemonBId] = useState('');
   const [resultado, setResultado] = useState(null);
 
   const handleBatalha = e => {
     e.preventDefault();
-    api.post(`/batalhar/${idA}/${idB}`)
+    api.post(`/batalhar/${pokemonAId}/${pokemonBId}`)
       .then(response => setResultado(response.data))
       .catch(err => alert(err.response.data.error));
   };
@@ -17,8 +17,8 @@ function BatalhaPokemon() {
     <div>
       <h2>Batalha</h2>
       <form onSubmit={handleBatalha}>
-        <input placeholder="ID Pokémon A" value={idA} onChange={e => setIdA(e.target.value)} />
-        <input placeholder="ID Pokémon B" value={idB} onChange={e => setIdB(e.target.value)} />
+        <input placeholder="ID Pokémon A" value={pokemonAId} onChange={e => setpokemonAId(e.target.value)} />
+        <input placeholder="ID Pokémon B" value={pokemonBId} onChange={e => setpokemonBId(e.target.value)} />
         <button type="submit">Batalhar</button>
       </form>
       {resultado && (
