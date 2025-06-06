@@ -2,13 +2,6 @@ const express = require('express');
 const router = express.Router();
 const pokemonController = require('../controllers/pokemonController');
 const { validarPokemon, validarId, validarErros } = require('../validations/pokemonValidation');
-
-router.post('/', validarPokemon, validarErros, pokemonController.criarPokemon);
-router.get('/', pokemonController.listarPokemons);
-router.get('/:id', validarId, validarErros, pokemonController.carregarPokemon);
-router.put('/:id', validarId, validarErros, pokemonController.alterarPokemon);
-router.delete('/:id', validarId, validarErros, pokemonController.deletarPokemon);
-
 /**
  * @swagger
  * /pokemons:

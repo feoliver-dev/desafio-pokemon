@@ -9,9 +9,10 @@
     "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
     "start:backend": "cd backend && npm start",
     "start:frontend": "cd frontend && npm start",
-     "test:docker": "docker exec -it backend npm test"   
+    "test:docker": "docker exec -it backend npm test"
   },
   "dependencies": {
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "react-scripts": "^5.0.1"
   }
 }
