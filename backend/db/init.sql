@@ -1,7 +1,8 @@
-CREATE TABLE IF NOT EXISTS pokemons (
+USE pokemon_db;
+
+CREATE TABLE pokemons (
   id INT AUTO_INCREMENT PRIMARY KEY,
   tipo VARCHAR(50) NOT NULL,
   treinador VARCHAR(50) NOT NULL,
-  nivel INT NOT NULL DEFAULT 1
+  nivel INT DEFAULT 1
 );
-
