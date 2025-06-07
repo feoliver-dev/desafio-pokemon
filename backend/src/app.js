@@ -34,7 +34,6 @@ const validarId = [
 ];
 
 // 1.1 Criar Pokemon
-// 1.1 Criar Pokemon
 app.post('/pokemons', async (req, res) => {
   try {
     const { tipo, treinador } = req.body;
