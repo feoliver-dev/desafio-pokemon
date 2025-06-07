@@ -102,6 +102,16 @@ app.delete('/pokemons/:id', async (req, res) => {
   }
 });
 
+// 1.5 Listar todos os pokemons
+app.get('/pokemons/', async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM pokemons');
+    res.status(200).json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erro no servidor' });
+  }
+});
 
 // 1.4 Carregar um pokemon
 app.get('/pokemons/:id', async (req, res) => {
@@ -121,16 +131,7 @@ app.get('/pokemons/:id', async (req, res) => {
 });
 
 
-// 1.5 Listar todos os pokemons
-app.get('/pokemons', async (req, res) => {
-  try {
-    const [rows] = await pool.query('SELECT * FROM pokemons');
-    res.status(200).json(rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Erro no servidor' });
-  }
-});
+
 
 
 module.exports = app;

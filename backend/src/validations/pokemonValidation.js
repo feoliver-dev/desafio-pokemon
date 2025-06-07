@@ -18,10 +18,6 @@ exports.validarId = [
 
 exports.validarErros = (req, res, next) => {
   const errors = validationResult(req);
-  // Se for uma rota que não depende de ID, ignore a validação de ID
-  if (req.route.path === '/pokemons' && req.method === 'GET') {
-    return next();
-  }
 
   if (!errors.isEmpty()) {
     return res.status(400).json({

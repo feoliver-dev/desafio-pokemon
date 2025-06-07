@@ -2,6 +2,33 @@ const express = require('express');
 const router = express.Router();
 const pokemonController = require('../controllers/pokemonController');
 const { validarPokemon, validarId, validarErros } = require('../validations/pokemonValidation');
+
+/**
+ * @swagger
+ * /pokemons:
+ *   get:
+ *     summary: Lista todos os Pokémons
+ *     responses:
+ *       200:
+ *         description: Lista de Pokémons retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   tipo:
+ *                     type: string
+ *                   treinador:
+ *                     type: string
+ *                   nivel:
+ *                     type: integer
+ */
+router.get('/', pokemonController.listarPokemons);
+
 /**
  * @swagger
  * /pokemons:
@@ -92,6 +119,9 @@ router.put('/:id', validarId, validarErros, pokemonController.alterarPokemon);
  */
 router.delete('/:id', validarId, validarErros, pokemonController.deletarPokemon);
 
+
+
+
 /**
  * @swagger
  * /pokemons/{id}:
@@ -124,32 +154,6 @@ router.delete('/:id', validarId, validarErros, pokemonController.deletarPokemon)
  *         description: Pokémon não encontrado
  */
 router.get('/:id', validarId, validarErros, pokemonController.carregarPokemon);
-
-/**
- * @swagger
- * /pokemons:
- *   get:
- *     summary: Lista todos os Pokémons
- *     responses:
- *       200:
- *         description: Lista de Pokémons retornada com sucesso
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                   tipo:
- *                     type: string
- *                   treinador:
- *                     type: string
- *                   nivel:
- *                     type: integer
- */
-router.get('/', pokemonController.listarPokemons);
 
 module.exports = router;
 
