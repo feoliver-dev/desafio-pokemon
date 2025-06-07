@@ -1,9 +1,6 @@
-networks:
-  app_network:
-    driver: bridge
 services:
   db:
-    image: mysql:8.0.42
+    image: mysql
     container_name: db
     restart: always
     environment:
@@ -13,9 +10,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
-      - ./backend/db/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - app_network
+      - ./backend/db/init.sql:/docker-entrypoint-initdb.d/init.sq
 
 
   backend:
@@ -27,9 +22,6 @@ services:
       - ./backend/.env
     depends_on:
       - db
-    networks:
-      - app_network
-
 
   frontend:
     build: ./frontend
