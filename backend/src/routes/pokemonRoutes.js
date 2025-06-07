@@ -27,7 +27,7 @@ const { validarPokemon, validarId, validarErros } = require('../validations/poke
  *                   nivel:
  *                     type: integer
  */
-router.get('/', pokemonController.listarPokemons);
+router.get('/pokemons', pokemonController.listarPokemons);
 
 /**
  * @swagger
@@ -67,7 +67,7 @@ router.get('/', pokemonController.listarPokemons);
  *                 nivel:
  *                   type: integer
  */
-router.post('/', validarPokemon, validarErros, pokemonController.criarPokemon);
+router.post('/pokemons', validarPokemon, validarErros, pokemonController.criarPokemon);
 
 /**
  * @swagger
@@ -97,7 +97,7 @@ router.post('/', validarPokemon, validarErros, pokemonController.criarPokemon);
  *       204:
  *         description: Treinador alterado com sucesso (sem conteúdo)
  */
-router.put('/:id', validarId, validarErros, pokemonController.alterarPokemon);
+router.put('/pokemons/:id', validarId, validarErros, pokemonController.alterarPokemon);
 
 /**
  * @swagger
@@ -117,7 +117,7 @@ router.put('/:id', validarId, validarErros, pokemonController.alterarPokemon);
  *       404:
  *         description: Pokémon não encontrado
  */
-router.delete('/:id', validarId, validarErros, pokemonController.deletarPokemon);
+router.delete('/pokemons/:id', validarId, validarErros, pokemonController.deletarPokemon);
 
 
 
@@ -153,7 +153,8 @@ router.delete('/:id', validarId, validarErros, pokemonController.deletarPokemon)
  *       404:
  *         description: Pokémon não encontrado
  */
-router.get('/:id', validarId, validarErros, pokemonController.carregarPokemon);
+router.get('/pokemons/:id', validarId, validarErros, pokemonController.carregarPokemon);
 
 module.exports = router;
+
 
