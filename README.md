@@ -31,7 +31,7 @@ Backend API: http://localhost:3006
 Frontend: http://localhost:3000
 
 ou no Swagger: http://localhost:3006/api-docs/ 
-(Em Listar Pokemons há um erro, apenas no Swagger, que não consegui resolver a tempo. Mas funciona normalmente pelo navegador, curl e Postman)
+(Funciona normalmente pelo navegador, curl e Postman.)
 
 ------------------------------------------------------------------------------------------------------------------
 🐳 Dependências Docker
