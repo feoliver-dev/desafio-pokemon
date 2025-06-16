@@ -17,6 +17,8 @@ git clone https://github.com/feoliver-dev/desafio-pokemon.git
 
 cd desafio-pokemon
 
+npm install
+
 docker-compose up --build
 
 ------------------------------------------------------------------------------------------------------------------
