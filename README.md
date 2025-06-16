@@ -12,7 +12,8 @@ Este projeto é uma aplicação FullStack que permite registrar e listar pokémo
 ## 🚀Como Executar o Projeto
 
 1. **Clone o repositório**
-'''bash
+   
+No bash
 git clone https://github.com/feoliver-dev/desafio-pokemon.git
 cd desafio-pokemon
 docker-compose up --build
