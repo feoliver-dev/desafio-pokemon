@@ -21,6 +21,8 @@ npm install
 
 docker-compose up --build
 
+npm run test:docker (teste com Jest e Supertest)
+
 ------------------------------------------------------------------------------------------------------------------
 Isso vai iniciar:
 API rodando em http://localhost:3006 
@@ -29,10 +31,9 @@ MySQL no container db (porta 3306 interna)
 Acesso
 Backend API: http://localhost:3006
 Frontend: http://localhost:3000
-
-ou no Swagger: http://localhost:3006/api-docs/ 
+Swagger: http://localhost:3006/api-docs/ 
 (Funciona normalmente pelo navegador, curl e Postman.)
-
+ 
 ------------------------------------------------------------------------------------------------------------------
 🐳 Dependências Docker
 Certifique-se de ter:
