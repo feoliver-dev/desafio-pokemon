@@ -6,7 +6,7 @@ Este projeto é uma aplicação FullStack que permite registrar e listar pokémo
 
 - **Backend**: Node.js com Express
 - **Banco de Dados**: MySQL
-- **Docker**: Docker Compose para orquestração
+- **Docker**: Docker Compose para isolar e orquestrar a API e banco de dados.
 - **Frontend**: (React, em andamento)
 
 ## 🚀Como Executar o Projeto
